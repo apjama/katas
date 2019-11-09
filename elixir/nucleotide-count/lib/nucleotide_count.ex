@@ -14,8 +14,9 @@ defmodule NucleotideCount do
   """
   @spec count(charlist(), char()) :: non_neg_integer()
   def count(strand, nucleotide) do
-    letter = String.split_at(nucleotide, 1)
-    count(strand, fn x -> x == letter end)
+    string_nucleotide = <<nucleotide::utf8>>
+
+    strand |> to_string() |> String.graphemes() |> Enum.count(&(&1 == string_nucleotide))
   end
 
   @doc """
@@ -29,6 +30,11 @@ defmodule NucleotideCount do
   # return a map that gives me how many times each thing occured
   @spec histogram(charlist()) :: map()
   def histogram(strand) do
-    map = Enum.reduce(chars, %{}, fn x, acc -> Map.put(acc, x, x) end)
+    strand
+    |> Enum.reduce(%{?A => 0, ?T => 0, ?C => 0, ?G => 0}, fn nucleotide, hist ->
+      Map.update(hist, nucleotide, 1, &(&1 + 1))
+    end)
+
+    # Enum.reduce(chars, %{}, fn x, acc -> Map.put(acc, x, x) end)
   end
 end
