@@ -1,4 +1,5 @@
 defmodule RnaTranscription do
+  @dna_to_rna_mapping  %{71 => 67, 67 => 71, 84 => 65, 65 => 85}
   @doc """
   Transcribes a character list representing DNA nucleotides to RNA
 
@@ -9,8 +10,7 @@ defmodule RnaTranscription do
   """
 
   def convert_dna(dna) do
-    dna_to_rna_mapping = %{71 => 67, 67 => 71, 84 => 65, 65 => 85}
-    dna_to_rna_mapping[dna]
+    @dna_to_rna_mapping[dna]
   end
 
   @spec to_rna([char]) :: [char]
